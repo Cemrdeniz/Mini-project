@@ -1,0 +1,17 @@
+import { useState } from "react";
+
+function useAuth() {
+  const [user, setUser] = useState(null);
+
+  const login = (data) => {
+    setUser(data);
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
+
+  return { user, login, logout };
+}
+
+export default useAuth;
