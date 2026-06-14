@@ -1,13 +1,19 @@
 import { useState } from "react";
 
 function useAuth() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
 
-  const login = (data) => {
-    setUser(data);
+  const login = (email) => {
+    const userData = { email };
+
+    localStorage.setItem("user", JSON.stringify(userData));
+    setUser(userData);
   };
 
   const logout = () => {
+    localStorage.removeItem("user");
     setUser(null);
   };
 
