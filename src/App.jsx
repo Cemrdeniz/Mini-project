@@ -3,17 +3,36 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import Layout from "./components/Layout";
+import ProtectedRoute from "./components/ProtectedRoute";
+import useAuth from "./hooks/useAuth";
 
 function App() {
+  const { user } = useAuth();
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
 
-        <Route element={<Layout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/products" element={<Products />} />
-        </Route>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute user={user}>
+              <Layout />
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute user={user}>
+              <Layout />
+              <Products />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
