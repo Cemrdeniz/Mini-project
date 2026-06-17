@@ -1,10 +1,20 @@
-import products from "../data/products";
+import { useState } from "react";
+import productsData from "../data/products";
 import formatPrice from "../utils/formatPrice";
+import AddProduct from "../components/AddProduct";
 
 function Products() {
+  const [products, setProducts] = useState(productsData);
+
+  const addProduct = (newProduct) => {
+    setProducts([...products, newProduct]);
+  };
+
   return (
     <div>
       <h1>Products</h1>
+
+      <AddProduct onAdd={addProduct} />
 
       <table border="1" cellPadding="10">
         <thead>
