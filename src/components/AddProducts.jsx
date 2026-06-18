@@ -1,23 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function AddProduct({ onAdd }) {
+function AddProduct({ onAdd, editingProduct, onUpdate }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
 
+  useEffect(() => {
+    if (editingProduct) {
+      setName(editingProduct.name);
+      setCategory(editingProduct.category);
+      setPrice(editingProduct.price);
+      setStock(editingProduct.stock);
+    }
+  }, [editingProduct]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newProduct = {
-      id: Date.now(),
+    const productData = {
+      id: editingProduct ? editingProduct.id : Date.now(),
       name,
       category,
       price: Number(price),
       stock: Number(stock),
     };
 
-    onAdd(newProduct);
+    if (editingProduct) {
+      onUpdate(productData);
+    } else {
+      onAdd(productData);
+    }
 
     setName("");
     setCategory("");
@@ -55,7 +68,9 @@ function AddProduct({ onAdd }) {
         onChange={(e) => setStock(e.target.value)}
       />
 
-      <button type="submit">Add Product</button>
+      <button type="submit">
+        {editingProduct ? "Update Product" : "Add Product"}
+      </button>
     </form>
   );
 }
